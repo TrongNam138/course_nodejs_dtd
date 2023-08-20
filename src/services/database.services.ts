@@ -1,5 +1,6 @@
-import { Db, MongoClient, ServerApiVersion } from 'mongodb'
+import { Collection, Db, MongoClient } from 'mongodb'
 import 'dotenv/config'
+import User from '~/models/schemas/User.schemas'
 
 class Database {
   private client: MongoClient
@@ -16,6 +17,10 @@ class Database {
     } catch (error: any) {
       throw new Error(error)
     }
+  }
+
+  users(): Collection<User> {
+    return this.db.collection('users')
   }
 }
 

@@ -50,36 +50,36 @@ enum UserVerifyStatus {
   // đã xác thực email
   Verified,
   // đã bị khóa
-  Banned,
+  Banned
 }
 
 interface User {
-  _id: ObjectId;
+  _id: ObjectId
 
   // Đăng kí: username, email, date of birth, password
-  // Đăng nhập: username hoặc email và password
-  username: string;
-  email: string;
-  date_of_birth: Date;
-  password: string;
+  // Đăng nhập: email và password
+  username: string
+  email: string
+  date_of_birth: Date
+  password: string
 
   // Xác thực email: jwt nếu chưa xác thực, '' khi đã xác thực
-  email_verify_token: string;
+  email_verify_token: string
 
   // Quên mật khẩu: jwt nếu chưa xác thực, '' khi đã xác thực
-  forgot_password_token: string;
+  forgot_password_token: string
 
   // Thông tin người dùng có thể cập nhật thêm
-  bio: string;
-  avatar: string;
-  cover_photo: string;
+  bio: string
+  avatar: string
+  cover_photo: string
 
   // Quản lý trạng thái tài khoản
-  verify: UserVerifyStatus;
+  verify: UserVerifyStatus
 
   // Quản lý thời gian tạo và cập nhập tài khoản
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date
+  updated_at: Date
 }
 ```
 
@@ -96,13 +96,13 @@ interface User {
 
 ```ts
 interface Refresh_token {
-  _id: ObjectId;
+  _id: ObjectId
 
   // Những thông tin cân thiết
-  user_id: ObjectId;
-  token: string;
+  user_id: ObjectId
+  token: string
 
   // Quản lý thời gian tạo
-  created_at: Date;
+  created_at: Date
 }
 ```
