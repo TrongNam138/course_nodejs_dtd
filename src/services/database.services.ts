@@ -1,6 +1,7 @@
 import { Collection, Db, MongoClient } from 'mongodb'
 import 'dotenv/config'
 import User from '~/models/schemas/User.schemas'
+import Refresh_token from '~/models/schemas/Refresh_token.schemas'
 
 class Database {
   private client: MongoClient
@@ -21,6 +22,9 @@ class Database {
 
   users(): Collection<User> {
     return this.db.collection('users')
+  }
+  refresh_tokens(): Collection<Refresh_token> {
+    return this.db.collection('refresh_tokens')
   }
 }
 

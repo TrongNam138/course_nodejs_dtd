@@ -57,3 +57,22 @@ export const registerValidator = validate(
     ['body']
   )
 )
+
+export const loginValidator = validate(
+  checkSchema(
+    {
+      email: {
+        isEmail: {
+          errorMessage: 'Email must be a valid email address'
+        }
+      },
+      password: {
+        isStrongPassword: {
+          errorMessage:
+            'Password must be at least 8 characters, contain at least 1 lowercase letter, 1 uppercase letter, 1 number, and 1 symbol'
+        }
+      }
+    },
+    ['body']
+  )
+)

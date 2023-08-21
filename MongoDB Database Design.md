@@ -99,7 +99,7 @@ interface Refresh_token {
   _id: ObjectId
 
   // Những thông tin cân thiết
-  user_id: ObjectId
+  user_id: string
   token: string
 
   // Quản lý thời gian tạo
