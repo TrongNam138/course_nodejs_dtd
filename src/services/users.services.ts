@@ -44,44 +44,36 @@ const createTokens = async (user_id: string) => {
 
 // Register
 export const registerService = async (reqBody: registerReqBody) => {
-  try {
-    // Insert user to database
-    const result = await database.users().insertOne(
-      new User({
-        ...reqBody,
-        date_of_birth: new Date(reqBody.date_of_birth),
-        password: hashPassword(reqBody.password)
-      })
-    )
+  // Insert user to database
+  const result = await database.users().insertOne(
+    new User({
+      ...reqBody,
+      date_of_birth: new Date(reqBody.date_of_birth),
+      password: hashPassword(reqBody.password)
+    })
+  )
 
-    return result
-  } catch (error: any) {
-    throw new Error(error)
-  }
+  return result
 }
 
 // Login
 export const loginService = async (reqBody: loginReqBody) => {
-  try {
-    // Check if user exists
-    const user = await database.users().findOne({ ...reqBody, password: hashPassword(reqBody.password) })
+  // Check if user exists
+  const user = await database.users().findOne({ ...reqBody, password: hashPassword(reqBody.password) })
 
-    if (user) {
-      const userId = user._id.toString()
+  if (user) {
+    const userId = user._id.toString()
 
-      // Create tokens
-      const token = await createTokens(userId)
-      const refresh_token = new Refresh_token({ user_id: userId, token: token.refresh_token })
+    // Create tokens
+    const token = await createTokens(userId)
+    const refresh_token = new Refresh_token({ user_id: userId, token: token.refresh_token })
 
-      // Save refresh token to database
-      await database.refresh_tokens().insertOne(refresh_token)
+    // Save refresh token to database
+    await database.refresh_tokens().insertOne(refresh_token)
 
-      // Return tokens to client
-      return token
+    // Return tokens to client
+    return token
 
-      // null if user does not exist
-    } else return user
-  } catch (error: any) {
-    throw new Error(error)
-  }
+    // null if user does not exist
+  } else return user
 }

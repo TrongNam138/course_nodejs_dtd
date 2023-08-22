@@ -1,4 +1,5 @@
 import { checkSchema } from 'express-validator'
+import { ErrorWithStatus } from '~/models/Error'
 import database from '~/services/database.services'
 import validate from '~/utils/validate'
 
