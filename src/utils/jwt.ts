@@ -1,9 +1,11 @@
-import { sign, Secret, SignOptions } from 'jsonwebtoken'
+import { sign, verify, Secret, SignOptions, JwtPayload } from 'jsonwebtoken'
 import 'dotenv/config'
+
+const EnvPrivateKey = process.env.JWT_PRIVATE_KEY as string
 
 export const signToken = ({
   payload,
-  privateKey = process.env.JWT_PRIVATE_KEY as string,
+  privateKey = EnvPrivateKey,
   options = { algorithm: 'HS256' }
 }: {
   payload: string | object | Buffer
@@ -19,4 +21,20 @@ export const signToken = ({
       }
     })
   })
+}
+
+export const verifyToken = (token: string, privateKey = EnvPrivateKey) => {
+  return new Promise<JwtPayload>((resolve, reject) => {
+    verify(token, privateKey, (err, decoded) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(decoded as JwtPayload)
+      }
+    })
+  })
+}
+
+export const verifyTokens = (tokens: string[]) => {
+  return Promise.all(tokens.map((token) => verifyToken(token)))
 }

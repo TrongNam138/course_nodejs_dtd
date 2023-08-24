@@ -17,4 +17,20 @@ validate:
 --> login thành công (email, password có trong db)
     tạo at, rt, lưu vào db và trả về cho người dùng
     
-    
+ĐĂNG XUẤT
+post /user/logout (refresh token)
+validate:
+  - verify token
+--> OK: xóa refresh token trong db
+--> NO: thông báo lỗi
+
+REFRESH TOKEN 
+post /user/refresh-token (refresh token)
+validate:
+  - verify token
+--> OK: tạo at mới và rf mới giữ nguyễn exp, update rf vào db, trả về at và rf cho client
+--> NO: thông báo lỗi
+
+
+
+

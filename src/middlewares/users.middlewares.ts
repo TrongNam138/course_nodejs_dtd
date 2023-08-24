@@ -1,6 +1,9 @@
-import { checkSchema } from 'express-validator'
+import { Request, Response, NextFunction } from 'express'
+import { body, checkSchema } from 'express-validator'
+import HTTP_STATUS from '~/constants/httpStatus'
 import { ErrorWithStatus } from '~/models/Error'
 import database from '~/services/database.services'
+import { verifyToken, verifyTokens } from '~/utils/jwt'
 import validate from '~/utils/validate'
 
 export const registerValidator = validate(
@@ -76,4 +79,28 @@ export const loginValidator = validate(
     },
     ['body']
   )
+)
+
+export const refreshTokenValidator = validate(
+  checkSchema({
+    refresh_token: {
+      custom: {
+        options: async (value, { req }) => {
+          try {
+            if (!(await database.refresh_tokens().findOne({ token: value }))) {
+              throw new Error('Refresh token does not exist')
+            }
+            const decoded = await verifyToken(value)
+            ;(req as Request).decoded_refresh_token = decoded
+            return true
+          } catch (error: any) {
+            throw new ErrorWithStatus({
+              status: HTTP_STATUS.UNAUTHORIZED,
+              message: error.message
+            })
+          }
+        }
+      }
+    }
+  })
 )
